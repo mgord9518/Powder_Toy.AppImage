@@ -21,4 +21,5 @@ jobs:
         prerelease: true
         title: "Continuous Build"
         files: |
-          squashfuse*
+          *.AppImage
+          *.zsync
