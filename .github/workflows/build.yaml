@@ -1,8 +1,8 @@
 name: Automatic build
 
 on:
-  push:
-    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * *'
 
 jobs:
   build:
@@ -17,9 +17,9 @@ jobs:
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "continuous"
-        prerelease: true
-        title: "Continuous Build"
+        automatic_release_tag: "nightly"
+        prerelease: false
+        title: "Nightly Build"
         files: |
           *.AppImage
           *.zsync
