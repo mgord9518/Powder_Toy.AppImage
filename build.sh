@@ -114,9 +114,12 @@ fi
 
 # Use the found mkappimage command to build our AppImage with update information
 echo "Building $appImageName..."
-ARCH="$ARCH" VERSION="$aiVersion" aitool --comp="$comp" -u \
-	"gh-releases-zsync|mgord9518|appimage_scripts|continuous|Powder_Toy-*$ARCH.AppImage.zsync" \
-	'AppDir/' # &> "$tempDir/out.log"
+export ARCH="$ARCH"
+export VERSION="$aiVersion"
+
+aitool --comp="$comp" -u \
+	"gh-releases-zsync|mgord9518|Powder_Toy.AppImage|continuous|Powder_Toy-*$ARCH.AppImage.zsync" \
+	'AppDir/'
 
 if [ ! $? = 0 ]; then
 	printErr "failed to build '$appImageName'"
