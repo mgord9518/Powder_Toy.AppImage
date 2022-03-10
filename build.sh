@@ -35,7 +35,14 @@ Icon=$appId
 Terminal=false
 Categories=Game;Simulation;
 StartupWMClass=$appBinName
-X-AppImage-Version="
+X-AppImage-Version=
+[X-App Permissions]
+Level=3
+Devices=dri;
+Sockets=x11;network;"
+
+appStream='
+'
 
 printErr() {
 	echo -e "FATAL: $@"
