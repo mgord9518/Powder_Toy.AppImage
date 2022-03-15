@@ -75,7 +75,8 @@ printErr() {
 
 # Create and move to working directory
 mkdir -p "$tempDir/AppDir/usr/bin" \
-         "$tempDir/AppDir/usr/share/icons/hicolor/scalable/apps"
+         "$tempDir/AppDir/usr/share/icons/hicolor/scalable/apps" \
+         "$tempDir/AppDir/usr/share/metainfo"
 
 if [ ! $? = 0  ]; then
 	printErr 'Failed to create temporary directory.'
