@@ -18,6 +18,7 @@ sudo mount --rbind /run/systemd chrootdir/run/systemd
 cat << EOF | sudo chroot chrootdir /bin/bash
 sudo apt update
 sudo apt install -y libssl-dev libluajit-5.1-dev libcurl4-openssl-dev zlib1g-dev libsdl2-dev pkg-config ccache python3-pip git libfftw3-dev
+sudo pip3 install --upgrade pip
 sudo pip3 install meson ninja
 
 wget https://raw.githubusercontent.com/mgord9518/Powder_Toy.AppImage/main/build.sh
