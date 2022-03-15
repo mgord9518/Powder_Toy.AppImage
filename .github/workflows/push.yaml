@@ -15,8 +15,14 @@ jobs:
         sudo apt install libssl-dev libluajit-5.1-dev libcurl4-openssl-dev zlib1g-dev libsdl2-dev pkg-config ccache python3-pip git libfftw3-dev
         sudo pip3 install meson ninja
 
-    - name: Build
+    - name: Build for x86_64
       run: ./build.sh
+
+    - name: Download Ubuntu aarch64 image
+      run:  wget https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-arm64.squashfs
+
+    - name: Build for aarch64
+      run:  ./build_in_chroot.sh arm64
 
     - name: Upload build
       uses: "marvinpinto/action-automatic-releases@latest"
@@ -28,3 +34,5 @@ jobs:
         files: |
           *.AppImage
           *.zsync
+          chrootdir/*.AppImage
+          chrootdir/*.zsync
