@@ -91,7 +91,7 @@ cd The-Powder-Toy
 
 echo "$appStream" > "AppDir/usr/share/metainfo/$appId.appdata.xml"
 
-meson -Dc_link_args="-Wl,--no-undefined /usr/lib/$ARCH-linux-gnu/libxcb.a" -Dbuildtype=release -Dstatic=system -Db_vscrt=static_from_buildtype \
+meson -Dproject_link_args="-Wl,--no-undefined /usr/lib/$ARCH-linux-gnu/libxcb.a" -Dbuildtype=release -Dstatic=system -Db_vscrt=static_from_buildtype \
     -Dignore_updates=true -D install_check=false build-release-static
 cd build-release-static
 ninja
