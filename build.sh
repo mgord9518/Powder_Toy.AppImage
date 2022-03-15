@@ -7,10 +7,6 @@
 [ -z "$TMPDIR" ] && TMPDIR='/tmp'
 [ -z "$ARCH" ]   && ARCH=$(uname -m)
 
-if [ $GITHUB_ACTIONS ]; then
-	sudo apt install bsdtar
-fi
-
 aiVersion=$(curl -s https://powdertoy.co.uk | grep 'Version' | head -n 1 | tr -dc '0-9.')
 # ^ Hacky one liner to parse version number from download on website. This may
 # break in the future if the website is redesigned
@@ -41,8 +37,33 @@ Level=3
 Devices=dri;
 Sockets=x11;network;"
 
-appStream='
-'
+appStream='<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>uk.co.powdertoy.tpt</id>
+  
+  <name>Powder Toy</name>
+  <summary>Physics sandbox game</summary>
+  
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>GPL3</project_license>
+  
+  <description>
+    <p>
+Have you ever wanted to blow something up? Or maybe you always dreamt of operating an atomic power plant? Do you have a will to develop your own CPU? The Powder Toy lets you to do all of these, and even more!
+
+The Powder Toy is a free physics sandbox game, which simulates air pressure and velocity, heat, gravity and a countless number of interactions between different substances! The game provides you with various building materials, liquids, gases and electronic components which can be used to construct complex machines, guns, bombs, realistic terrains and almost anything else. You can then mine them and watch cool explosions, add intricate wirings, play with little stickmen or operate your machine. You can browse and play thousands of different saves made by the community or upload your own – we welcome your creations!
+    </p>
+  </description>
+  
+  <categories>
+    <category>Game</category>
+    <category>Simulation</category>
+  </categories>
+  
+  <provides>
+    <binary>powder</binary>
+  </provides>
+</component>'
 
 printErr() {
 	echo -e "FATAL: $@"
@@ -63,23 +84,17 @@ fi
 cd "$tempDir"
 echo "Working directory: $tempDir"
 
-# Download and extract the latest zip
-# Unfortunately requires BSDTAR couldn't get unzip working with stdin
-# any alternative solutions welcome
-#echo "Downloading and extracting $appName..."
-#wget "$appUrl" -O - 2> "$tempDir/out.log" | bsdtar -Oxf - "$appBinName" > "AppDir/usr/bin/$appBinName"
-#if [ ! $? = 0 ]; then
-#	printErr "Failed to download '$appName' (make sure you're connected to the internet)"
-#fi
-#chmod +x "AppDir/usr/bin/$appBinName"
-
+# Download source and build
 git clone https://github.com/The-Powder-Toy/The-Powder-Toy
 cd The-Powder-Toy
+
+echo "$appStream" > "AppDir/usr/share/metainfo/$appId.appdata.xml"
 
 meson -Dbuildtype=release -Dstatic=prebuilt -Db_vscrt=static_from_buildtype \
     -Dignore_updates=true -D install_check=false build-release-static
 cd build-release-static
 ninja
+strip -s powder
 cd ../..
 
 mv The-Powder-Toy/build-release-static/powder "AppDir/usr/bin/$appBinName"
