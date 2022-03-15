@@ -1,0 +1,30 @@
+name: Automatic build
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install deps
+      run:  |
+        sudo apt install libssl-dev libluajit-5.1-dev libcurl4-openssl-dev zlib1g-dev libsdl2-dev pkg-config ccache python3-pip git libfftw3-dev
+        sudo pip3 install meson ninja
+
+    - name: Build
+      run: ./build.sh
+
+    - name: Upload build
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "nightly"
+        prerelease: false
+        title: "Nightly Build"
+        files: |
+          *.AppImage
+          *.zsync
