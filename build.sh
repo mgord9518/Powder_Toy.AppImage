@@ -82,7 +82,7 @@ cd build-release-static
 ninja
 cd ../..
 
-mv build-release-static/powder "../$appBinName"
+mv The-Powder-Toy/build-release-static/powder "../$appBinName"
 
 # Download the icon
 wget "$iconUrl" -O "AppDir/usr/share/icons/hicolor/scalable/apps/$appId.svg" &> "$tempDir/out.log"
