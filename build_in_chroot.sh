@@ -16,6 +16,7 @@ sudo mount --rbind /run/systemd chrootdir/run/systemd
 
 # Everything below will be run inside the chroot
 cat << EOF | sudo chroot chrootdir /bin/bash
+sudo apt update
 sudo apt install libssl-dev libluajit-5.1-dev libcurl4-openssl-dev zlib1g-dev libsdl2-dev pkg-config ccache python3-pip git libfftw3-dev
 sudo pip3 install meson ninja
 
