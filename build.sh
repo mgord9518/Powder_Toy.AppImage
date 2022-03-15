@@ -66,12 +66,23 @@ echo "Working directory: $tempDir"
 # Download and extract the latest zip
 # Unfortunately requires BSDTAR couldn't get unzip working with stdin
 # any alternative solutions welcome
-echo "Downloading and extracting $appName..."
-wget "$appUrl" -O - 2> "$tempDir/out.log" | bsdtar -Oxf - "$appBinName" > "AppDir/usr/bin/$appBinName"
-if [ ! $? = 0 ]; then
-	printErr "Failed to download '$appName' (make sure you're connected to the internet)"
-fi
-chmod +x "AppDir/usr/bin/$appBinName"
+#echo "Downloading and extracting $appName..."
+#wget "$appUrl" -O - 2> "$tempDir/out.log" | bsdtar -Oxf - "$appBinName" > "AppDir/usr/bin/$appBinName"
+#if [ ! $? = 0 ]; then
+#	printErr "Failed to download '$appName' (make sure you're connected to the internet)"
+#fi
+#chmod +x "AppDir/usr/bin/$appBinName"
+
+git clone https://github.com/The-Powder-Toy/The-Powder-Toy
+cd The-Powder-Toy
+
+meson -Dbuildtype=release -Dstatic=prebuilt -Db_vscrt=static_from_buildtype \
+    -Dignore_updates=true -D install_check=false build-release-static
+cd build-release-static
+ninja
+cd ../..
+
+mv build-release-static/powder "../$appBinName"
 
 # Download the icon
 wget "$iconUrl" -O "AppDir/usr/share/icons/hicolor/scalable/apps/$appId.svg" &> "$tempDir/out.log"

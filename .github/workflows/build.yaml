@@ -10,6 +10,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Install deps
+      run:  |
+        sudo apt install libssl-dev libluajit-5.1-dev libcurl4-openssl-dev zlib1g-dev libsdl2-dev pkg-config ccache python3-pip git libfftw3-dev
+        sudo pip3 install meson ninja
+
     - name: Build
       run: ./build.sh
 
