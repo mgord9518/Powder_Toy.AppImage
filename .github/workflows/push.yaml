@@ -12,17 +12,17 @@ jobs:
 
     - name: Install deps
       run:  |
-        sudo apt install libssl-dev libluajit-5.1-dev libcurl4-openssl-dev zlib1g-dev libsdl2-dev pkg-config ccache python3-pip git libfftw3-dev libnghttp2-dev libidn2-dev librtmp-dev libpsl-dev libgssapi-krb5-2 libkrb5-dev libk5crypto3 libcom-err2 libldap2-dev libxcb1-dev libxau-dev libxdmcp-dev libgmp-dev libgnutls28-dev libnettle6
+        sudo apt install libssl-dev libluajit-5.1-dev libcurl4-openssl-dev zlib1g-dev libsdl2-dev pkg-config ccache python3-pip git libfftw3-dev #libnghttp2-dev libidn2-dev librtmp-dev libpsl-dev libgssapi-krb5-2 libkrb5-dev libk5crypto3 libcom-err2 libldap2-dev libxcb1-dev libxau-dev libxdmcp-dev libgmp-dev libgnutls28-dev libnettle6
         sudo pip3 install meson ninja
 
     - name: Build for x86_64
       run: ./build.sh
 
-    - name: Download Ubuntu aarch64 image
-      run:  wget https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-arm64.squashfs
-
-    - name: Build for aarch64
-      run:  ./build_in_chroot.sh arm64
+        #    - name: Download Ubuntu aarch64 image
+        #      run:  wget https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-arm64.squashfs
+        #
+        #    - name: Build for aarch64
+        #      run:  ./build_in_chroot.sh arm64
 
     - name: Upload build
       uses: "marvinpinto/action-automatic-releases@latest"
