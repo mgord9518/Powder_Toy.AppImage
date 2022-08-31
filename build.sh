@@ -18,7 +18,7 @@ tempDir="$TMPDIR/.buildApp_$appName.$RANDOM"
 startDir="$PWD"
 appUrl='https://powdertoy.co.uk/Download/powder-lin64.zip'
 iconUrl='https://raw.githubusercontent.com/mgord9518/Powder_Toy.AppImage/main/resources/uk.co.powdertoy.tpt.svg'
-comp='gzip'
+comp='zstd'
 
 # Define what should be in the desktop entry
 entry="[Desktop Entry]
@@ -112,39 +112,8 @@ echo "$entry" > "AppDir/$appId.desktop"
 ln -s "./usr/bin/$appBinName" 'AppDir/AppRun'
 ln -s "./usr/share/icons/hicolor/scalable/apps/$appId.svg" "AppDir/$appId.svg"
 
-# Check if user has AppImageTool (under the names of `appimagetool.AppImage`
-# and `appimagetool-x86_64.AppImage`) if not, download it
-echo 'Checking if AppImageTool is installed...'
-if command -v 'mkappimage.AppImage'; then
-	aitool() {
-		'mkappimage.AppImage' "$@"
-	}
-elif command -v "mkappimage-$ARCH.AppImage"; then
-	aitool() {
-		"mkappimage-$ARCH.AppImage" "$@"
-	}
-elif command -v "$PWD/mkappimage"; then
-	aitool() {
-		"$PWD/mkappimage" "$@"
-	}
-elif command -v 'mkappimage'; then
-	aitool() {
-		'mkappimage' "$@"
-	}
-elif command -v 'appimagetool'; then
-	aitool() {
-		'appimagetool' "$@"
-	}
-else
-	# Hacky one-liner to get the URL to download the latest mkappimage
-	mkAppImageUrl=$(curl -q https://api.github.com/repos/probonopd/go-appimage/releases | grep $(uname -m) | grep mkappimage | grep browser_download_url | cut -d'"' -f4 | head -n1)
-	echo 'Downloading `mkappimage`'
-	wget "$mkAppImageUrl" -O 'mkappimage'
-	chmod +x 'mkappimage'
-	aitool() {
-		"$PWD/mkappimage" "$@"
-    }
-fi
+wget 'https://raw.githubusercontent.com/mgord9518/appimage_scripts/main/scripts/get_mkappimage.sh'
+. ./get_mkappimage.sh
 
 
 # Use the found mkappimage command to build our AppImage with update information
@@ -152,7 +121,7 @@ echo "Building $appImageName..."
 export ARCH="$ARCH"
 export VERSION="$aiVersion"
 
-aitool --comp="$comp" -u \
+ai_tool --comp="$comp" -u \
 	"gh-releases-zsync|mgord9518|Powder_Toy.AppImage|continuous|Powder_Toy-*$ARCH.AppImage.zsync" \
 	'AppDir/'
 
