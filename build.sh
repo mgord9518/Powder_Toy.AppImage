@@ -65,6 +65,8 @@ The Powder Toy is a free physics sandbox game, which simulates air pressure and 
   </provides>
 </component>'
 
+
+
 printErr() {
 	echo -e "FATAL: $@"
 	echo 'Log:'
@@ -75,6 +77,7 @@ printErr() {
 
 # Create and move to working directory
 mkdir -p "$tempDir/AppDir/usr/bin" \
+         "$tempDir/AppDir/usr/lib" \
          "$tempDir/AppDir/usr/share/icons/hicolor/scalable/apps" \
          "$tempDir/AppDir/usr/share/metainfo"
 
@@ -107,9 +110,13 @@ if [ ! $? = 0 ]; then
 	printErr "Failed to download '$appId.svg' (make sure you're connected to the internet)"
 fi
 
-# Create desktop entry and link up executable and icons
+# Create desktop entry and add AppRun script
 echo "$entry" > "AppDir/$appId.desktop"
-ln -s "./usr/bin/$appBinName" 'AppDir/AppRun'
+#ln -s "./usr/bin/$appBinName" 'AppDir/AppRun'
+wget 'https://raw.githubusercontent.com/AppImage/AppImageKit/master/resources/AppRun' -O 'AppDir/AppRun'
+chmod +x 'AppDir/AppRun'
+cp /usr/lib/x86_64-linux-gnu/libssl.so* 'AppDir/usr/lib'
+cp /usr/lib/x86_64-linux-gnu/libcrypto.so* 'AppDir/usr/lib'
 ln -s "./usr/share/icons/hicolor/scalable/apps/$appId.svg" "AppDir/$appId.svg"
 
 wget 'https://raw.githubusercontent.com/mgord9518/appimage_scripts/main/scripts/get_mkappimage.sh'
