@@ -115,8 +115,8 @@ echo "$entry" > "AppDir/$appId.desktop"
 #ln -s "./usr/bin/$appBinName" 'AppDir/AppRun'
 wget 'https://raw.githubusercontent.com/AppImage/AppImageKit/master/resources/AppRun' -O 'AppDir/AppRun'
 chmod +x 'AppDir/AppRun'
-cp /usr/lib/x86_64-linux-gnu/libssl.so* 'AppDir/usr/lib'
-cp /usr/lib/x86_64-linux-gnu/libcrypto.so* 'AppDir/usr/lib'
+cp /usr/lib/x86_64-linux-gnu/libssl.so.1.1 'AppDir/usr/lib'
+cp /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1 'AppDir/usr/lib'
 ln -s "./usr/share/icons/hicolor/scalable/apps/$appId.svg" "AppDir/$appId.svg"
 
 wget 'https://raw.githubusercontent.com/mgord9518/appimage_scripts/main/scripts/get_mkappimage.sh'
